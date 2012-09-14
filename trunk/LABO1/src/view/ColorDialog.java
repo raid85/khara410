@@ -119,11 +119,46 @@ public class ColorDialog extends JDialog {
 	private JPanel createCMYKPanel(ColorDialogResult result, int imageWidths) {	
 		JPanel panel = new JPanel();
 		
+		//Définition de l'interface graphique pour l'onglet CMYK
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		
+		ColorSlider csCyan = new ColorSlider("C:", result.getPixel().getRed(), rgbMediator.getRedImage());
+		ColorSlider csMagenta = new ColorSlider("M:", result.getPixel().getGreen(), rgbMediator.getGreenImage());
+		ColorSlider csYellow = new ColorSlider("Y:", result.getPixel().getBlue(), rgbMediator.getBlueImage());
+		ColorSlider csKey = new ColorSlider("K:", result.getPixel().getBlue(), rgbMediator.getBlueImage());
+		
+//		rgbMediator.setRedCS(csRed);
+//		rgbMediator.setGreenCS(csGreen);
+//		rgbMediator.setBlueCS(csBlue);
+		
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(csCyan);
+		panel.add(csMagenta);
+		panel.add(csYellow);
+		panel.add(csKey);
+		
+		
 		return panel;
 	}
 	
 	private JPanel createHSVPanel(ColorDialogResult result, int imageWidths) {	
 		JPanel panel = new JPanel();
+		
+		//Définition de l'interface graphique pour l'onglet HSV
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		
+		ColorSlider csHue = new ColorSlider("H:", result.getPixel().getRed(), rgbMediator.getRedImage());
+		ColorSlider csSaturation = new ColorSlider("S:", result.getPixel().getGreen(), rgbMediator.getGreenImage());
+		ColorSlider csValue = new ColorSlider("V:", result.getPixel().getBlue(), rgbMediator.getBlueImage());
+		
+//		rgbMediator.setRedCS(csRed);
+//		rgbMediator.setGreenCS(csGreen);
+//		rgbMediator.setBlueCS(csBlue);
+		
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.add(csHue);
+		panel.add(csSaturation);
+		panel.add(csValue);
 		
 		return panel;
 	}
