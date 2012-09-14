@@ -40,6 +40,8 @@ import model.Pixel;
 public class ColorDialog extends JDialog {
 	private JButton okButton;
 	private RGBColorMediator rgbMediator;
+	private CMYKColorMediator cmykMediator;
+	private HSVColorMediator hsvMediator;
 	private ActionListener okActionListener;
 	private ColorDialogResult result;
 	
@@ -117,19 +119,22 @@ public class ColorDialog extends JDialog {
 	}
 	
 	private JPanel createCMYKPanel(ColorDialogResult result, int imageWidths) {	
+		cmykMediator = new CMYKColorMediator(result, imageWidths, 30);
+		
 		JPanel panel = new JPanel();
 		
 		//Définition de l'interface graphique pour l'onglet CMYK
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
-		ColorSlider csCyan = new ColorSlider("C:", result.getPixel().getRed(), rgbMediator.getRedImage());
-		ColorSlider csMagenta = new ColorSlider("M:", result.getPixel().getGreen(), rgbMediator.getGreenImage());
-		ColorSlider csYellow = new ColorSlider("Y:", result.getPixel().getBlue(), rgbMediator.getBlueImage());
-		ColorSlider csKey = new ColorSlider("K:", result.getPixel().getBlue(), rgbMediator.getBlueImage());
+		ColorSlider csCyan = new ColorSlider("C:", result.getPixel().getRed(), cmykMediator.getCyanImage());
+		ColorSlider csMagenta = new ColorSlider("M:", result.getPixel().getGreen(), cmykMediator.getMagentaImage());
+		ColorSlider csYellow = new ColorSlider("Y:", result.getPixel().getBlue(), cmykMediator.getYellowImage());
+		ColorSlider csKey = new ColorSlider("K:", result.getPixel().getBlue(), cmykMediator.getKeyImage());
 		
-//		rgbMediator.setRedCS(csRed);
-//		rgbMediator.setGreenCS(csGreen);
-//		rgbMediator.setBlueCS(csBlue);
+		cmykMediator.setCyanCS(csCyan);
+		cmykMediator.setMagentaCS(csMagenta);
+		cmykMediator.setYellowCS(csYellow);
+		cmykMediator.setKeyCS(csKey);
 		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(csCyan);
@@ -142,6 +147,7 @@ public class ColorDialog extends JDialog {
 	}
 	
 	private JPanel createHSVPanel(ColorDialogResult result, int imageWidths) {	
+		//hsvColorMediator= new HSVColorMediator(result, imageWidths, 30);
 		JPanel panel = new JPanel();
 		
 		//Définition de l'interface graphique pour l'onglet HSV
