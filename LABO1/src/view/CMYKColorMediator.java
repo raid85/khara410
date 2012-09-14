@@ -1,0 +1,255 @@
+/*
+   This file is part of j2dcg.
+   j2dcg is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+   j2dcg is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+   You should have received a copy of the GNU General Public License
+   along with j2dcg; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
+package view;
+
+import java.awt.image.BufferedImage;
+
+import model.ObserverIF;
+import model.Pixel;
+
+class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {
+	
+	
+	
+	//Ajouts des sliders requises pour les images des sélecteurs de CMYK et HSV
+	
+	ColorSlider cyanCS;
+	ColorSlider magentaCS;
+	ColorSlider yellowCS;
+	ColorSlider keyCS ;
+	
+	
+	
+	//Ajouts des couleurs requises pour les images des sélecteurs de CMYK et HSV
+	
+	int cyan;
+	int magenta;
+	int yellow;
+	int key ;
+	
+
+	
+	BufferedImage cyanImage;
+	BufferedImage magentaImage;
+	BufferedImage yellowImage;
+	BufferedImage keyImage;
+	
+
+	
+	int imagesWidth;
+	int imagesHeight;
+	ColorDialogResult result;
+	
+	CMYKColorMediator(ColorDialogResult result, int imagesWidth, int imagesHeight) {
+		
+		this.imagesWidth = imagesWidth;
+		this.imagesHeight = imagesHeight;
+		//a faire dans Pixel
+//		this.cyan = result.getPixel().getCyan();		
+//		this.magenta = result.getPixel().getMagenta();
+//		this.key = result.getPixel().getKey();		
+//		this.yellow = result.getPixel().getYellow();
+		
+		this.result = result;
+		result.addObserver(this);
+		
+
+		
+		//Ajouts des couleurs requises pour les images des sélecteurs de CMYK et HSV
+		
+		cyanImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		magentaImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		yellowImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		
+		//création des images  CMYK
+		
+		computeCyanImage(cyan, magenta, yellow,key);
+		computeMagentaImage(cyan, magenta, yellow,key);
+		computeYellowImage(cyan, magenta, yellow,key);
+		computeKeyImage (cyan, magenta, yellow,key);	
+	}
+	
+//	public void computeRedImage(int red, int green, int blue) { 
+//	Pixel p = new Pixel(red, green, blue, 255); 
+//	for (int i = 0; i<imagesWidth; ++i) {
+//		p.setRed((int)(((double)i / (double)imagesWidth)*255.0)); 
+//		int rgb = p.getARGB();
+//		for (int j = 0; j<imagesHeight; ++j) {
+//			redImage.setRGB(i, j, rgb);
+//		}
+//	}
+//	if (redCS != null) {
+//		redCS.update(redImage);
+//	}
+//}
+
+	
+	
+	private void computeKeyImage(int cyan2, int magenta2, int yellow2, int key2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private void computeYellowImage(int cyan2, int magenta2, int yellow2,
+			int key2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private void computeMagentaImage(int cyan2, int magenta2, int yellow2,
+			int key2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private void computeCyanImage(int cyan2, int magenta2, int yellow2, int key2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/*
+	 * @see View.SliderObserver#update(double)
+	 */
+	public void update(ColorSlider s, int v) {
+		
+		boolean updateCyan = false;
+		boolean updateMagenta = false;
+		boolean updateYellow = false;
+		
+//		if (s == redCS && v != red) {
+//			red = v;
+//			updateGreen = true;
+//			updateBlue = true;
+//		}
+//		if (s == greenCS && v != green) {
+//			green = v;
+//			updateRed = true;
+//			updateBlue = true;
+//		}
+//		if (s == blueCS && v != blue) {
+//			blue = v;
+//			updateRed = true;
+//			updateGreen = true;
+//		}
+//		if (updateRed) {
+//			computeRedImage(red, green, blue);
+//		}
+//		if (updateGreen) {
+//			computeGreenImage(red, green, blue);
+//		}
+//		if (updateBlue) {
+//			computeBlueImage(red, green, blue);
+//		}
+		
+		//Pixel pixel = new Pixel(red, green, blue, 255);
+		//result.setPixel(pixel);
+	}
+	
+	public void update() {
+		// When updated with the new "result" color, if the "currentColor"
+		// is aready properly set, there is no need to recompute the images.
+//		Pixel currentColor = new Pixel(red, green, blue, 255);
+//		if(currentColor.getARGB() == result.getPixel().getARGB()) return;
+//		
+//		red = result.getPixel().getRed();
+//		green = result.getPixel().getGreen();
+//		blue = result.getPixel().getBlue();
+//		
+//		redCS.setValue(red);
+//		greenCS.setValue(green);
+//		blueCS.setValue(blue);
+//		computeRedImage(red, green, blue);
+//		computeGreenImage(red, green, blue);
+//		computeBlueImage(red, green, blue);
+		
+		// Efficiency issue: When the color is adjusted on a tab in the 
+		// user interface, the sliders color of the other tabs are recomputed,
+		// even though they are invisible. For an increased efficiency, the 
+		// other tabs (mediators) should be notified when there is a tab 
+		// change in the user interface. This solution was not implemented
+		// here since it would increase the complexity of the code, making it
+		// harder to understand.
+	}
+
+
+	public BufferedImage getCyanImage() {
+		return cyanImage;
+	}
+
+	public BufferedImage getMagentaImage() {
+		return magentaImage;
+	}
+	
+	public BufferedImage getYellowImage() {
+		return yellowImage;
+	}
+	
+	public BufferedImage getKeyImage() {
+		return keyImage;
+	}
+
+	
+	public void setCyanCS(ColorSlider slider) {
+		cyanCS = slider;
+		slider.addObserver(this);
+	}
+
+	/**
+	 * @param slider
+	 */
+	public void setMagentaCS(ColorSlider slider) {
+		magentaCS = slider;
+		slider.addObserver(this);
+	}
+
+	/**
+	 * @param slider
+	 */
+	public void setYellowCS(ColorSlider slider) {
+		yellowCS = slider;
+		slider.addObserver(this);
+	}
+
+	public void setKeyCS(ColorSlider slider) {
+		keyCS = slider;
+		slider.addObserver(this);
+	}
+
+
+
+	
+	public double getCyan() {
+		return cyan;
+	}
+	public double getMagenta() {
+		return magenta;
+	}
+	public double getYellow() {
+		return yellow;
+	}
+	public double getKey() {
+		return key;
+	}
+
+
+	
+
+}
+
