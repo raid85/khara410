@@ -21,20 +21,55 @@ import model.ObserverIF;
 import model.Pixel;
 
 class RGBColorMediator extends Object implements SliderObserver, ObserverIF {
+	
 	ColorSlider redCS;
 	ColorSlider greenCS;
 	ColorSlider blueCS;
 	int red;
 	int green;
 	int blue;
+	
 	BufferedImage redImage;
 	BufferedImage greenImage;
 	BufferedImage blueImage;
+	
+	//Ajouts des sliders requises pour les images des sélecteurs de CMYK et HSV
+	
+	ColorSlider cyanCS;
+	ColorSlider magentaCS;
+	ColorSlider yellowCS;
+	ColorSlider keyCs ;
+	
+	ColorSlider hueCS;
+	ColorSlider saturationCS;
+	ColorSlider valueCS;
+	
+	//Ajouts des couleurs requises pour les images des sélecteurs de CMYK et HSV
+	
+	int cyan;
+	int magenta;
+	int yellow;
+	int key ;
+	
+	int hue ;
+	int saturation ;
+	int value ;
+	
+	BufferedImage cyanImage;
+	BufferedImage magentaImage;
+	BufferedImage yellowImage;
+	BufferedImage keyImage;
+	
+	BufferedImage hueImage;
+	BufferedImage saturationImage;
+	BufferedImage valueImage;
+	
 	int imagesWidth;
 	int imagesHeight;
 	ColorDialogResult result;
 	
 	RGBColorMediator(ColorDialogResult result, int imagesWidth, int imagesHeight) {
+		
 		this.imagesWidth = imagesWidth;
 		this.imagesHeight = imagesHeight;
 		this.red = result.getPixel().getRed();
@@ -46,6 +81,17 @@ class RGBColorMediator extends Object implements SliderObserver, ObserverIF {
 		redImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
 		greenImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
 		blueImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		
+		//Ajouts des couleurs requises pour les images des sélecteurs de CMYK et HSV
+		
+		cyanImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		magentaImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		yellowImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		hueImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		saturationImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		hueImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		valueImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		
 		computeRedImage(red, green, blue);
 		computeGreenImage(red, green, blue);
 		computeBlueImage(red, green, blue); 	
