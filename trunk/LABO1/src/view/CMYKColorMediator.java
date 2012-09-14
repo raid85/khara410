@@ -73,6 +73,7 @@ class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {
 		cyanImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
 		magentaImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
 		yellowImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
+		keyImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
 		
 		//création des images  CMYK
 		
@@ -132,6 +133,7 @@ class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {
 		boolean updateCyan = false;
 		boolean updateMagenta = false;
 		boolean updateYellow = false;
+		boolean updateKey = false;
 		
 //		if (s == redCS && v != red) {
 //			red = v;
