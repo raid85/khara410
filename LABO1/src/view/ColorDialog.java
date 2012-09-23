@@ -119,17 +119,16 @@ public class ColorDialog extends JDialog {
 	}
 	
 	private JPanel createCMYKPanel(ColorDialogResult result, int imageWidths) {	
-		cmykMediator = new CMYKColorMediator(result, imageWidths, 30);
-		
-		JPanel panel = new JPanel();
 		
 		//Définition de l'interface graphique pour l'onglet CMYK
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		cmykMediator = new CMYKColorMediator(result, imageWidths, 30);		
 		
-		ColorSlider csCyan = new ColorSlider("C:", result.getPixel().getRed(), cmykMediator.getCyanImage());
-		ColorSlider csMagenta = new ColorSlider("M:", result.getPixel().getGreen(), cmykMediator.getMagentaImage());
-		ColorSlider csYellow = new ColorSlider("Y:", result.getPixel().getBlue(), cmykMediator.getYellowImage());
-		ColorSlider csKey = new ColorSlider("K:", result.getPixel().getRed(), cmykMediator.getKeyImage());
+		JPanel panel = new JPanel();		
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));		
+		ColorSlider csCyan = new ColorSlider("C:", (int) (cmykMediator.getCyan()*255), cmykMediator.getCyanImage());
+		ColorSlider csMagenta = new ColorSlider("M:", (int)(cmykMediator.getMagenta()*255), cmykMediator.getMagentaImage());
+		ColorSlider csYellow = new ColorSlider("Y:", (int) (cmykMediator.getYellow()*255), cmykMediator.getYellowImage());
+		ColorSlider csKey = new ColorSlider("K:", (int) (cmykMediator.getKey()*255), cmykMediator.getKeyImage());
 		
 		cmykMediator.setCyanCS(csCyan);
 		cmykMediator.setMagentaCS(csMagenta);

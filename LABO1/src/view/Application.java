@@ -106,7 +106,7 @@ public class Application extends JFrame {
 	    setJMenuBar(menu);
 	    
 	    setTitle("j2dcg");    
-	    setSize(800, 600);
+	    setSize(500,400);
 	    setVisible(true);
     	
     	addWindowListener(new WindowAdapter() { 
@@ -114,7 +114,7 @@ public class Application extends JFrame {
 	        	System.exit(0);
 	        }
 	    });
-  	}
+  	} 
   	
   	/**
   	 * MAIN
