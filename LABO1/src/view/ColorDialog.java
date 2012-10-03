@@ -146,19 +146,20 @@ public class ColorDialog extends JDialog {
 	}
 	
 	private JPanel createHSVPanel(ColorDialogResult result, int imageWidths) {	
-		//hsvColorMediator= new HSVColorMediator(result, imageWidths, 30);
+		
+		hsvMediator = new HSVColorMediator(result, imageWidths, 30);
 		JPanel panel = new JPanel();
 		
 		//Définition de l'interface graphique pour l'onglet HSV
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
-		ColorSlider csHue = new ColorSlider("H:", result.getPixel().getRed(), rgbMediator.getRedImage());
-		ColorSlider csSaturation = new ColorSlider("S:", result.getPixel().getGreen(), rgbMediator.getGreenImage());
-		ColorSlider csValue = new ColorSlider("V:", result.getPixel().getBlue(), rgbMediator.getBlueImage());
+		ColorSlider csHue = new ColorSlider("H:", ((int)((hsvMediator.getHue()*255))), hsvMediator.getHueImage());
+		ColorSlider csSaturation = new ColorSlider("S:",((int)(hsvMediator.getSaturation()*255)), hsvMediator.getSaturationImage());
+		ColorSlider csValue = new ColorSlider("V:",((int)(hsvMediator.getValue()*255)), hsvMediator.getValueImage());
 		
-//		rgbMediator.setRedCS(csRed);
-//		rgbMediator.setGreenCS(csGreen);
-//		rgbMediator.setBlueCS(csBlue);
+		hsvMediator.setHueCS(csHue);
+		hsvMediator.setSaturationCS(csSaturation);
+		hsvMediator.setValueCS(csValue);
 		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(csHue);
