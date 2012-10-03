@@ -21,7 +21,7 @@ import model.ObserverIF;
 import model.Pixel;
 
 class RGBColorMediator extends Object implements SliderObserver, ObserverIF {
-	
+
 	ColorSlider redCS;
 	ColorSlider greenCS;
 	ColorSlider blueCS;
