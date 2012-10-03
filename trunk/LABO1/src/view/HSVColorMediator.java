@@ -6,21 +6,22 @@ import java.awt.image.BufferedImage;
 import model.ObserverIF;
 import model.Pixel;
 
+/**Cette classe représente le panneau de sélection dans l'espace de couleur HSV**/
 class HSVColorMediator extends Object implements SliderObserver, ObserverIF {	
 
-
+	// Les Sliders	
 	ColorSlider hueCS;
 	ColorSlider saturationCS;
 	ColorSlider valueCS;
-
+	// Les valeurs de l'espace couleur
 	double hue;
 	double saturation;
 	double value;
-
+	// Les images derrière les sliders
 	BufferedImage hueImage;
 	BufferedImage saturationImage;
 	BufferedImage valueImage;
-
+	// Les attributs de l'image
 	int imagesWidth;
 	int imagesHeight;
 	ColorDialogResult result;
@@ -29,24 +30,14 @@ class HSVColorMediator extends Object implements SliderObserver, ObserverIF {
 
 		this.imagesWidth = imagesWidth;
 		this.imagesHeight = imagesHeight;
-		//Test fragment
-		//		System.out.println("Result RGB VALUE :"+result.getPixel().toString());
-
-
+		//Creation de notre tableau de valeur pour les valeur reçue et converties
 		double[] hsv = new double[3];
+		//Conversion du résultat reçu
 		hsv = rgb2hsv(result.getPixel().getRed(),result.getPixel().getGreen(),result.getPixel().getBlue());
-
-		//TESTS
-//				for(int i=0 ; i<hsv.length ;i++){
-//					System.out.println("HSV["+i+"] = "+hsv[i]);}
-//				System.out.println("**-=...Output from...=-**"+this.getClass().getName());
 
 		this.hue = hsv[0];		
 		this.saturation = hsv[1];
 		this.value = hsv[2];
-
-
-
 		this.result = result;
 
 		result.addObserver(this);
@@ -141,7 +132,7 @@ class HSVColorMediator extends Object implements SliderObserver, ObserverIF {
 	 */
 
 	private static double[] rgb2hsv (int R, int G,int B) {
-		
+
 		double[] hsv = new double[3];
 		// R,G,B in [0,255]
 		float H = 0, S = 0, V = 0;
@@ -180,12 +171,12 @@ class HSVColorMediator extends Object implements SliderObserver, ObserverIF {
 		hsv[2] = V;
 		return hsv;
 
-		//http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+
 
 	}
-
+	// Inspiré de http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
 	private int [] hsv2rgb (float h, float s, float v) {
-		
+
 		// h,s,v in [0,1]
 		float rr = 0, gg = 0, bb = 0;
 		float hh = (6 * h) % 6;                 
@@ -195,27 +186,27 @@ class HSVColorMediator extends Object implements SliderObserver, ObserverIF {
 		float y = (1 - (s * c2)) * v;
 		float z = (1 - (s * (1 - c2))) * v;	
 		switch (c1) {
-			case 0: rr=v; gg=z; bb=x; break;
-			case 1: rr=y; gg=v; bb=x; break;
-			case 2: rr=x; gg=v; bb=z; break;
-			case 3: rr=x; gg=y; bb=v; break;
-			case 4: rr=z; gg=x; bb=v; break;
-			case 5: rr=v; gg=x; bb=y; break;
+		case 0: rr=v; gg=z; bb=x; break;
+		case 1: rr=y; gg=v; bb=x; break;
+		case 2: rr=x; gg=v; bb=z; break;
+		case 3: rr=x; gg=y; bb=v; break;
+		case 4: rr=z; gg=x; bb=v; break;
+		case 5: rr=v; gg=x; bb=y; break;
 		}
 		int N = 256;
 		int r = Math.min(Math.round(rr*N),N-1);
 		int g = Math.min(Math.round(gg*N),N-1);
 		int b = Math.min(Math.round(bb*N),N-1);
-		
-	
-	
+
+
+
 		int [] rgb = new int[3];
 		rgb[0] = r ;
 		rgb[1] = g;
 		rgb[2] = b ;
 		return rgb;
 	}
-	
+
 
 	public void update(ColorSlider s, int v) {
 
@@ -224,22 +215,19 @@ class HSVColorMediator extends Object implements SliderObserver, ObserverIF {
 		boolean updatevalue = false;
 
 
-		if (s == hueCS && v != (int)(hue*255)) {
-			//System.out.println("vhue = "+v);
+		if (s == hueCS && v != (int)(hue*255)) {			
 			hue = v/255.0;
 			updatesaturation = true;
 			updatevalue = true;
 
 		}
-		if (s == saturationCS && v !=(int) (saturation*255)) {
-			//System.out.println("vsaturation = "+v);
+		if (s == saturationCS && v !=(int) (saturation*255)) {			
 			saturation = v/255.0;
 			updatehue = true;
 			updatevalue = true;
 
 		}
-		if (s == valueCS && v != (int)(value*255)) {
-			//System.out.println("vvalue = "+v);
+		if (s == valueCS && v != (int)(value*255)) {		
 			value = v/255.0;
 			updatehue = true;
 			updatesaturation = true;
@@ -255,16 +243,9 @@ class HSVColorMediator extends Object implements SliderObserver, ObserverIF {
 		if (updatevalue) {
 			computeValueImage(hue,saturation,value);
 		}
-
 		int [] rgb = new int [3];
 
-
-
 		rgb = hsv2rgb ((float)hue,(float)saturation,(float)value);
-
-		//				for(int i=0 ; i<rgb.length ;i++){
-		//					System.out.println("CONVERTED_RGB["+i+"] = "+rgb[i]);}
-
 		Pixel pixel = new Pixel(rgb[0], rgb[1], rgb[2], 255);
 		result.setPixel(pixel);
 	}
@@ -281,30 +262,21 @@ class HSVColorMediator extends Object implements SliderObserver, ObserverIF {
 		if(currentColor.getARGB() == result.getPixel().getARGB()) return;
 
 		double cmyk[] = new double[4] ;
-
+		// Conversion du résultat
 		cmyk = rgb2hsv(result.getPixel().getRed(),result.getPixel().getGreen(),result.getPixel().getBlue());
-
+		// On set le résultat
 		hue = cmyk[0];
 		saturation = cmyk[1];
 		value = cmyk[2];
-
-
+		// On informe les colorSlider
 		hueCS.setValue((int) (hue*255.0));
 		saturationCS.setValue((int) (saturation*255.0));
 		valueCS.setValue((int) (value*255.0));
-
+		// On recalcule les images
 		computeHueImage(hue,saturation,value);
 		computeValueImage(hue,saturation,value);
 		computeSaturationImage(hue,saturation,value);
 
-
-		// Efficiency issue: When the color is adjusted on a tab in the 
-		// user interface, the sliders color of the other tabs are recomputed,
-		// even though they are invisible. For an increased efficiency, the 
-		// other tabs (mediators) should be notified when there is a tab 
-		// change in the user interface. This solution was not implemented
-		// here since it would increase the complexity of the code, making it
-		// harder to understand.
 	}
 
 	public BufferedImage getHueImage() {
