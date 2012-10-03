@@ -19,18 +19,20 @@ import java.awt.image.BufferedImage;
 
 import model.ObserverIF;
 import model.Pixel;
-
+/**Cette classe représente le panneau de sélection dans l'espace de couleur CMYK**/
 class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {	
 
-
+	// Les sliders
 	ColorSlider cyanCS;
 	ColorSlider magentaCS;
 	ColorSlider yellowCS;
 	ColorSlider keyCS ;
+	// Les valeurs de l'espace couleur
 	double cyan;
 	double magenta;
 	double yellow;
 	double key ;	
+	//Les images derrière les sliders
 	BufferedImage cyanImage;
 	BufferedImage magentaImage;
 	BufferedImage yellowImage;
@@ -43,17 +45,9 @@ class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {
 
 		this.imagesWidth = imagesWidth;
 		this.imagesHeight = imagesHeight;
-		//Test fragment
-//		System.out.println("Result RGB VALUE :"+result.getPixel().toString());
-
-
 		double[] cmyk = new double[4];
+		//Conversion en CMYK des valeurs reçues en RGB
 		cmyk = rgb2cmyk(result.getPixel().getRed(),result.getPixel().getGreen(),result.getPixel().getBlue());
-
-		//TESTS
-//		for(int i=0 ; i<cmyk.length ;i++){
-//			System.out.println("CMYK["+i+"] = "+cmyk[i]);}
-//		System.out.println("**-=...Output from...=-**"+this.getClass().getName());
 
 		this.cyan = cmyk[0];		
 		this.magenta = cmyk[1];
@@ -65,7 +59,7 @@ class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {
 
 		result.addObserver(this);
 
-		//Ajouts des couleurs requises pour les images des sélecteurs de CMYK et HSV
+		//Ajouts des couleurs requises pour les images des sélecteurs de CMYK
 
 		cyanImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
 		magentaImage = new BufferedImage(imagesWidth, imagesHeight, BufferedImage.TYPE_INT_ARGB);
@@ -84,7 +78,7 @@ class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {
 
 
 	private void computeCyanImage(double cyan2, double magenta2, double yellow2, double key2) {
-		
+
 		int[] rgb2 = new int[3];
 		rgb2 = cmyk2rgb(cyan2, magenta2, yellow2, key2)  ;               
 		Pixel p = new Pixel(rgb2[0],rgb2[1],rgb2[2], 255); 
@@ -105,7 +99,7 @@ class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {
 
 	private void computeMagentaImage(double cyan2, double magenta2, double yellow2,
 			double key2) {
-		
+
 		int[] rgb2 = new int[3];
 		rgb2 = cmyk2rgb(cyan2, magenta2, yellow2, key2)  ;               
 		Pixel p = new Pixel(rgb2[0],rgb2[1],rgb2[2], 255); 
@@ -126,7 +120,7 @@ class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {
 
 	private void computeYellowImage(double cyan2, double magenta2, double yellow2,
 			double key2) {
-		
+
 		int[] rgb2 = new int[3];
 		rgb2 = cmyk2rgb(cyan2, magenta2, yellow2, key2)  ;               
 		Pixel p = new Pixel(rgb2[0],rgb2[1],rgb2[2], 255); 
@@ -146,7 +140,7 @@ class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {
 	}
 
 	private void computeKeyImage(double cyan2, double magenta2, double yellow2, double key2) {
-		
+
 		int[] rgb2 = new int[3];
 		rgb2 = cmyk2rgb(cyan2, magenta2, yellow2, key2)  ;               
 		Pixel p = new Pixel(rgb2[0],rgb2[1],rgb2[2], 255); 
@@ -165,7 +159,9 @@ class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {
 
 	}
 
+
 	private double[] rgb2cmyk (int R, int G,int B) {
+
 		double C = 0;
 		double M = 0;
 		double Y = 0;
@@ -206,19 +202,9 @@ class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {
 
 		int[]rgb = new int[3] ;
 
-		//		C = C/100;
-		//		M = M/100;
-		//		Y = Y/100;
-		//		K = K/100;
-		//Where CMYK and CMY values = 0 ÷ 1
-
 		C = ( C * ( 1 - K ) + K );
 		M = ( M * ( 1 - K ) + K );
-		Y = ( Y * ( 1 - K ) + K );
-
-	
-		//CMY values = 0 ÷ 1
-		//RGB values = 0 ÷ 255
+		Y = ( Y * ( 1 - K ) + K );	
 
 		rgb[0] = (int) (( 1 - C ) * 255);
 		rgb[1] = (int) (( 1 - M ) * 255);
@@ -236,29 +222,25 @@ class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {
 		boolean updateYellow = false;
 		boolean updateKey = false;
 
-		if (s == cyanCS && v != (int)(cyan*255)) {
-			//System.out.println("vCyan = "+v);
+		if (s == cyanCS && v != (int)(cyan*255)) {			
 			cyan = v/255.0;
 			updateMagenta = true;
 			updateYellow = true;
 			updateKey = true ;
 		}
-		if (s == magentaCS && v !=(int) (magenta*255)) {
-			//System.out.println("vMagenta = "+v);
+		if (s == magentaCS && v !=(int) (magenta*255)) {			
 			magenta = v/255.0;
 			updateCyan = true;
 			updateYellow = true;
 			updateKey = true ;
 		}
-		if (s == yellowCS && v != (int)(yellow*255)) {
-			//System.out.println("vYellow = "+v);
+		if (s == yellowCS && v != (int)(yellow*255)) {		
 			yellow = v/255.0;
 			updateCyan = true;
 			updateMagenta = true;
 			updateKey = true ;
 		}
-		if (s == keyCS && v != (int)(key*255)) {
-			//System.out.println("vKey = "+v);
+		if (s == keyCS && v != (int)(key*255)) {		
 			key = v/255.0;
 			updateCyan = true;
 			updateMagenta = true;
@@ -277,56 +259,44 @@ class CMYKColorMediator extends Object implements SliderObserver, ObserverIF {
 			computeKeyImage(cyan,magenta,yellow,key);
 		}
 		int [] rgb = new int [3];
-		
-//		System.out.println("C "+cyan);
-//		System.out.println("M "+magenta);
-//		System.out.println("Y "+yellow);
-//		System.out.println("K "+key);
 
 		rgb = cmyk2rgb (cyan,magenta,yellow,key);
 
-//				for(int i=0 ; i<rgb.length ;i++){
-//					System.out.println("CONVERTED_RGB["+i+"] = "+rgb[i]);}
 
 		Pixel pixel = new Pixel(rgb[0], rgb[1], rgb[2], 255);
 		result.setPixel(pixel);
 	}
 
-	
+
 	public void update() {
 		// When updated with the new "result" color, if the "currentColor"
 		// is aready properly set, there is no need to recompute the images.
-				
-				int [] rgb = new int [3];
-				rgb = cmyk2rgb(cyan,magenta,yellow,key);
-				Pixel currentColor = new Pixel(rgb[0], rgb[1], rgb[2], 255);
-				
-				if(currentColor.getARGB() == result.getPixel().getARGB()) return;
-				
-				double cmyk[] = new double[4] ;
-				
-				cmyk = rgb2cmyk(result.getPixel().getRed(),result.getPixel().getGreen(),result.getPixel().getBlue());
-				
-				cyan = cmyk[0];
-				magenta = cmyk[1];
-				yellow = cmyk[2];
-				key = cmyk[3];
-				
-				cyanCS.setValue((int) (cyan*255.0));
-				magentaCS.setValue((int) (magenta*255.0));
-				yellowCS.setValue((int) (yellow*255.0));
-				computeCyanImage(cyan,magenta,yellow,key);
-				computeYellowImage(cyan,magenta,yellow,key);
-				computeMagentaImage(cyan,magenta,yellow,key);
-				computeKeyImage (cyan,magenta,yellow,key);
 
-		// Efficiency issue: When the color is adjusted on a tab in the 
-		// user interface, the sliders color of the other tabs are recomputed,
-		// even though they are invisible. For an increased efficiency, the 
-		// other tabs (mediators) should be notified when there is a tab 
-		// change in the user interface. This solution was not implemented
-		// here since it would increase the complexity of the code, making it
-		// harder to understand.
+		int [] rgb = new int [3];
+		rgb = cmyk2rgb(cyan,magenta,yellow,key);
+		Pixel currentColor = new Pixel(rgb[0], rgb[1], rgb[2], 255);
+
+		if(currentColor.getARGB() == result.getPixel().getARGB()) return;
+
+		double cmyk[] = new double[4] ;
+		//Conversion des valeur reçues
+		cmyk = rgb2cmyk(result.getPixel().getRed(),result.getPixel().getGreen(),result.getPixel().getBlue());
+
+		cyan = cmyk[0];
+		magenta = cmyk[1];
+		yellow = cmyk[2];
+		key = cmyk[3];
+		// On place les curseur à la bonne position selon la valeur reçue
+		cyanCS.setValue((int) (cyan*255.0));
+		magentaCS.setValue((int) (magenta*255.0));
+		yellowCS.setValue((int) (yellow*255.0));
+		keyCS.setValue((int)(key*255.0));
+
+		computeCyanImage(cyan,magenta,yellow,key);
+		computeYellowImage(cyan,magenta,yellow,key);
+		computeMagentaImage(cyan,magenta,yellow,key);
+		computeKeyImage (cyan,magenta,yellow,key);
+
 	}
 
 	public BufferedImage getCyanImage() {
