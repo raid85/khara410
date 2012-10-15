@@ -11,7 +11,7 @@
    You should have received a copy of the GNU General Public License
    along with j2dcg; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ */
 
 package controller;
 import model.*;
@@ -35,23 +35,24 @@ public class ImageLineFiller extends AbstractTransformer {
 	private int currentImageWidth;
 	private Pixel fillColor = new Pixel(0xFF00FFFF);
 	private Pixel borderColor = new Pixel(0xFFFFFF00);
+	private Pixel currentColor = new Pixel(0xFFFFFF00);
 	private boolean floodFill = true;
 	private int hueThreshold = 1;
 	private int saturationThreshold = 2;
 	private int valueThreshold = 3;
-	
+
 	/**
 	 * Creates an ImageLineFiller with default parameters.
 	 * Default pixel change color is black.
 	 */
 	public ImageLineFiller() {
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see controller.AbstractTransformer#getID()
 	 */
 	public int getID() { return ID_FLOODER; } 
-	
+
 	protected boolean mouseClicked(MouseEvent e){
 		List intersectedObjects = Selector.getDocumentObjectsAtLocation(e.getPoint());
 		if (!intersectedObjects.isEmpty()) {
@@ -70,16 +71,70 @@ public class ImageLineFiller extends AbstractTransformer {
 				}
 				ptTransformed.translate(-currentImage.getPosition().x, -currentImage.getPosition().y);
 				if (0 <= ptTransformed.x && ptTransformed.x < currentImage.getImageWidth() &&
-				    0 <= ptTransformed.y && ptTransformed.y < currentImage.getImageHeight()) {
+						0 <= ptTransformed.y && ptTransformed.y < currentImage.getImageHeight()) {
 					currentImage.beginPixelUpdate();
-					horizontalLineFill(ptTransformed);
-					currentImage.endPixelUpdate();											 	
-					return true;
+					//horizontalLineFill(ptTransformed);
+					if (floodFill){floodFill(ptTransformed);}
+					else boundaryFill(ptTransformed);
 				}
+				currentImage.endPixelUpdate();											 	
+				return true;
 			}
 		}
-		return false;
+
+		return false;}
+	private void boundaryFill(Point ptClicked) {
+		// TODO Auto-generated method stub
+
 	}
+
+	private void floodFill(Point ptClicked) {
+	
+		Stack stack = new Stack();
+		stack.push(ptClicked);
+		currentColor = currentImage.getPixel(ptClicked.x, ptClicked.y);
+		while (!stack.empty()) {
+			Point current = (Point)stack.pop();
+			
+			
+			if (0 <= current.x && current.x < currentImage.getImageWidth() && 0 <= current.y && current.y < currentImage.getImageHeight()&&
+					!currentImage.getPixel(current.x, current.y).equals(fillColor)) {
+				currentImage.setPixel(current.x, current.y, fillColor);
+				
+				// Next points to fill.
+				if(current.x>0 && current.x< currentImage.getImageWidth() && current.y < (currentImage.getImageHeight()-1)&& current.y >0 ){
+				if(currentImage.getPixel(current.x-1, current.y).equals(currentColor)){
+					Point nextLeft = new Point(current.x-1, current.y);
+					stack.push(nextLeft);
+				}
+				if(currentImage.getPixel(current.x+1, current.y).equals(currentColor)){
+				Point nextRight = new Point(current.x+1, current.y);
+				stack.push(nextRight);
+				}
+				if(currentImage.getPixel(current.x, current.y+1).equals(currentColor)){
+				Point nextUp = new Point (current.x,current.y+1);
+				stack.push(nextUp);
+				}
+				if(currentImage.getPixel(current.x, current.y-1).equals(currentColor)){
+				Point nextDown = new Point (current.x,current.y-1);
+				stack.push(nextDown);
+				}	
+				}
+				
+				
+			}
+		}
+		
+//		floodFill(x, y, interiorColor, newColor)
+//		if (getPixel(x,y) == interiorColor) 
+//		setpixel(x,y,newColor) 
+//		floodFill(x+1,y,interiorColor, newColor)
+//		floodFill(x-1,y,interiorColor, newColor) 
+//		floodFill(x,y+1,interiorColor, newColor)
+//		floodFill(x,y-1,interiorColor, newColor)
+
+	}
+
 
 	/**
 	 * Horizontal line fill with specified color
@@ -90,9 +145,9 @@ public class ImageLineFiller extends AbstractTransformer {
 		while (!stack.empty()) {
 			Point current = (Point)stack.pop();
 			if (0 <= current.x && current.x < currentImage.getImageWidth() &&
-				!currentImage.getPixel(current.x, current.y).equals(fillColor)) {
+					!currentImage.getPixel(current.x, current.y).equals(fillColor)) {
 				currentImage.setPixel(current.x, current.y, fillColor);
-				
+
 				// Next points to fill.
 				Point nextLeft = new Point(current.x-1, current.y);
 				Point nextRight = new Point(current.x+1, current.y);
@@ -108,7 +163,7 @@ public class ImageLineFiller extends AbstractTransformer {
 		// TODO EP In this method, we could test if a pixel needs to be filled before
 		//      adding it to the stack (to reduce memory needs and increase efficiency).
 	}
-	
+
 	/**
 	 * @return
 	 */
