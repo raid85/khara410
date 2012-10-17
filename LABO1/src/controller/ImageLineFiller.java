@@ -88,7 +88,9 @@ public class ImageLineFiller extends AbstractTransformer {
 
 		int[] rgb = new int[3];
 		rgb = hsv2rgb((float)hueThreshold/180,(float)saturationThreshold/255,(float)valueThreshold/255);
-		System.out.println("RGB : "+rgb[0]+"..."+rgb[1]+"..."+rgb[2]);
+//      ***CONVERSION CHECKED		
+//		System.out.println("BORDER COLOR :"+borderColor.toString());
+//		System.out.println("RGB THRESHOLD : "+rgb[0]+"..."+rgb[1]+"..."+rgb[2]);
 		int rmax = borderColor.getRed()+rgb[0];
 		int rmin = borderColor.getRed()-rgb[0];		
 		int gmax = borderColor.getGreen()+rgb[1];
@@ -101,22 +103,22 @@ public class ImageLineFiller extends AbstractTransformer {
 		if (rmax>255) rmax= 255 ;
 		if (gmax>255) gmax= 255 ;
 		if (bmax>255) bmax= 255 ;
-		System.out.println("COLOR RANGE FOR R : "+rmin+" < "+borderColor.getRed()+" > "+rmax);
-		System.out.println("COLOR RANGE FOR G : "+gmin+" < "+borderColor.getGreen()+" > "+gmax);
-		System.out.println("COLOR RANGE FOR B : "+bmin+" < "+borderColor.getBlue()+" > "+bmax);
+//		System.out.println("COLOR RANGE FOR R : "+rmin+" < "+borderColor.getRed()+" > "+rmax);
+//		System.out.println("COLOR RANGE FOR G : "+gmin+" < "+borderColor.getGreen()+" > "+gmax);
+//		System.out.println("COLOR RANGE FOR B : "+bmin+" < "+borderColor.getBlue()+" > "+bmax);
 
-		Stack stack = new Stack();
+		Stack<Point> stack = new Stack<Point>();
 		stack.push(ptClicked);
 
 		while (!stack.empty()) {
-			Point current = (Point)stack.pop();				
+			Point current = stack.pop();				
 			
 
 			if (0 <= current.x && current.x < currentImage.getImageWidth() && 0 < current.y && current.y < (currentImage.getImageHeight()-1)&&
 					!currentImage.getPixel(current.x, current.y).equals(fillColor)) {
 				currentImage.setPixel(current.x, current.y, fillColor);
 				
-				// Next points to fill.			
+				// On met le voisin dans la pile si sa couleur est dans la plage tolérée définie par le threshold et la couleur de  bordure choisie		
 				if(!((currentImage.getPixel(current.x-1, current.y).getRed()<=rmax) &&(currentImage.getPixel(current.x-1, current.y).getRed()>=rmin))
 						||!((currentImage.getPixel(current.x-1, current.y).getGreen()<=gmax)&& (currentImage.getPixel(current.x-1, current.y).getGreen()>=gmin))
 						||!((currentImage.getPixel(current.x-1, current.y).getBlue()<=bmax) && (currentImage.getPixel(current.x-1, current.y).getBlue()>=bmin))){
@@ -147,6 +149,7 @@ public class ImageLineFiller extends AbstractTransformer {
 		}
 	}
 
+	//Fonction qui converti le threshold HSV en threshold RGB
 	private int [] hsv2rgb (float h, float s, float v) {
 
 		// h,s,v in [0,1]
@@ -182,13 +185,13 @@ public class ImageLineFiller extends AbstractTransformer {
 
 	private void floodFill(Point ptClicked) {
 
-		Stack stack = new Stack();
+		Stack<Point> stack = new Stack<Point>();
 		stack.push(ptClicked);
 		currentColor = currentImage.getPixel(ptClicked.x, ptClicked.y);
 
 
 		while (!stack.empty()) {
-			Point current = (Point)stack.pop();
+			Point current = stack.pop();
 
 
 
@@ -234,10 +237,10 @@ public class ImageLineFiller extends AbstractTransformer {
 	 * Horizontal line fill with specified color
 	 */
 	private void horizontalLineFill(Point ptClicked) {
-		Stack stack = new Stack();
+		Stack<Point> stack = new Stack<Point>();
 		stack.push(ptClicked);
 		while (!stack.empty()) {
-			Point current = (Point)stack.pop();
+			Point current = stack.pop();
 			if (0 <= current.x && current.x < currentImage.getImageWidth() &&
 					!currentImage.getPixel(current.x, current.y).equals(fillColor)) {
 				currentImage.setPixel(current.x, current.y, fillColor);
