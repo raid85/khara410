@@ -1,5 +1,5 @@
 /*
-   This file is part of j2dcg.
+   This file is partly inspired of j2dcg.
    j2dcg is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 2 of the License, or
@@ -23,18 +23,12 @@ import java.util.List;
 import java.util.Stack;
 
 /**
- * <p>Title: ImageLineFiller</p>
- * <p>Description: Image transformer that inverts the row color</p>
- * <p>Copyright: Copyright (c) 2003 Colin Barré-Brisebois, Éric Paquette</p>
- * <p>Company: ETS - École de Technologie Supérieure</p>
- * @author unascribed
- * @version $Revision: 1.12 $
+ * <p>Title: ImageFiller</p>
+ * @author Riad Chebli & Marc Massaad
+ * @version $Revision: 1.0 $
  */
-/**
- * @author ah45290
- *
- */
-public class ImageLineFiller extends AbstractTransformer {
+
+public class ImageFiller extends AbstractTransformer {
 	private ImageX currentImage;
 	private int currentImageWidth;
 	private Pixel fillColor = new Pixel(0xFF00FFFF);
@@ -49,7 +43,7 @@ public class ImageLineFiller extends AbstractTransformer {
 	 * Creates an ImageLineFiller with default parameters.
 	 * Default pixel change color is black.
 	 */
-	public ImageLineFiller() {
+	public ImageFiller() {
 	}
 
 	/* (non-Javadoc)
