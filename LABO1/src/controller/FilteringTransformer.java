@@ -31,16 +31,21 @@ import model.Shape;
  * @version $Revision: 1.6 $
  */
 public class FilteringTransformer extends AbstractTransformer{
+	
+	float[][] customVals = new float [3][3];
+	
 	Filter filter = new MeanFilter3x3(new PaddingZeroStrategy(), new ImageClampStrategy());
+//	Filter customfilter = new CustomFilter3x3(new PaddingZeroStrategy(), new ImageClampStrategy(),customVals);
 	
 	/**
 	 * @param _coordinates
 	 * @param _value
 	 */
 	public void updateKernel(Coordinates _coordinates, float _value) {
-		System.out.println("[" + (_coordinates.getColumn() - 1) + "]["
+		System.out.println("CustomVals "+"[" + (_coordinates.getColumn() - 1) + "]["
                                    + (_coordinates.getRow() - 1) + "] = " 
                                    + _value);
+		customVals[_coordinates.getColumn() - 1][_coordinates.getRow() - 1] = _value ;
 	}
 		
 	/**
@@ -49,6 +54,15 @@ public class FilteringTransformer extends AbstractTransformer{
 	 * @return
 	 */
 	protected boolean mouseClicked(MouseEvent e){
+//*******************BOUCLE DE TEST****************		
+//		for (int i = 0 ; i <= 2 ; i++){
+//			for (int j = 0 ; j <= 2 ; j++ ){
+//				System.out.println ("[" + i+ "]["
+//                        + j + "] = " 
+//                        + customVals[i][j]);				
+//			}
+//		}
+//*************************************************		
 		List intersectedObjects = Selector.getDocumentObjectsAtLocation(e.getPoint());
 		if (!intersectedObjects.isEmpty()) {			
 			Shape shape = (Shape)intersectedObjects.get(0);			
