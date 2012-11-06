@@ -19,6 +19,7 @@ import java.util.List;
 
 import model.ImageDouble;
 import model.ImageX;
+import model.KernelModel;
 import model.Shape;
 
 /**
@@ -35,16 +36,16 @@ public class FilteringTransformer extends AbstractTransformer{
 	float[][] customVals = new float [3][3];
 	
 	Filter filter = new MeanFilter3x3(new PaddingZeroStrategy(), new ImageClampStrategy());
-//	Filter customfilter = new CustomFilter3x3(new PaddingZeroStrategy(), new ImageClampStrategy(),customVals);
+	Filter customfilter = new CustomFilter3x3(new PaddingZeroStrategy(), new ImageClampStrategy(),customVals);
 	
 	/**
 	 * @param _coordinates
 	 * @param _value
 	 */
 	public void updateKernel(Coordinates _coordinates, float _value) {
-		System.out.println("CustomVals "+"[" + (_coordinates.getColumn() - 1) + "]["
-                                   + (_coordinates.getRow() - 1) + "] = " 
-                                   + _value);
+//		System.out.println("CustomVals "+"[" + (_coordinates.getColumn() - 1) + "]["
+//                                   + (_coordinates.getRow() - 1) + "] = " 
+//                                   + _value);
 		customVals[_coordinates.getColumn() - 1][_coordinates.getRow() - 1] = _value ;
 	}
 		
@@ -54,15 +55,7 @@ public class FilteringTransformer extends AbstractTransformer{
 	 * @return
 	 */
 	protected boolean mouseClicked(MouseEvent e){
-//*******************BOUCLE DE TEST****************		
-//		for (int i = 0 ; i <= 2 ; i++){
-//			for (int j = 0 ; j <= 2 ; j++ ){
-//				System.out.println ("[" + i+ "]["
-//                        + j + "] = " 
-//                        + customVals[i][j]);				
-//			}
-//		}
-//*************************************************		
+
 		List intersectedObjects = Selector.getDocumentObjectsAtLocation(e.getPoint());
 		if (!intersectedObjects.isEmpty()) {			
 			Shape shape = (Shape)intersectedObjects.get(0);			
@@ -92,7 +85,49 @@ public class FilteringTransformer extends AbstractTransformer{
 	 * @param string
 	 */
 	public void setBorder(String string) {
-		System.out.println(string);
+		
+		int index = 0;
+		for (int i = 0; i < KernelModel.HANDLING_BORDER_ARRAY.length; ++i) {
+			if (string.equals(KernelModel.HANDLING_BORDER_ARRAY[i])) {
+				index = i;
+			}
+		}
+		switch (index) {
+	
+			case 0: // 
+			{
+				System.out.println("0 Strategy");
+			} 
+			break;
+			case 1: // 
+			{
+				System.out.println("None ");
+			} 
+			break;
+			
+			case 2: //
+			{
+				System.out.println("Copy Border Strategy ");
+			} 
+			break;
+			case 3: // 
+			{
+				System.out.println("Mirror Border Strategy ");
+				
+			} 
+			break;
+			case 4: // Prewitt Horiz
+			{
+				System.out.println("Circular Border Strategy ");
+			} 
+			break;
+		
+			default:
+			{
+				System.out.println("FUCK YOU VASCO ");
+			}
+			break;
+			}
 	}
 
 	/**
