@@ -33,14 +33,11 @@ import model.Shape;
  */
 public class FilteringTransformer extends AbstractTransformer{
 
-	PaddingStrategy myPaddingStrategy  ;
-	ImageConversionStrategy myImageConversionStrategy ;
+	//Initiating with given GUI default values
+	PaddingStrategy myPaddingStrategy = new PaddingZeroStrategy ()  ;
+	ImageConversionStrategy myImageConversionStrategy = new ImageClampStrategy() ;
 	Filter myCustomFilter ;
 	float[][] customVals = {{0,0,0},{0,0,0},{0,0,0}};
-	
-	//Default Filter
-	Filter filter = new MeanFilter3x3(new PaddingZeroStrategy(), new ImageClampStrategy());
-
 
 	/**
 	 * @param _coordinates
@@ -57,22 +54,20 @@ public class FilteringTransformer extends AbstractTransformer{
 	 * @return
 	 */
 	protected boolean mouseClicked(MouseEvent e){
-
-		for(int i = 0 ; i<3 ; i ++){
-			for(int j = 0 ; j<3 ;j++){
-				System.out.println("["+customVals[i][j]+"]");
-			}
-		}
-
+				
+		System.out.println("Padding Strategy applied for the filter : "+myPaddingStrategy.getClass().getName());
+		System.out.println("Conversion Strategy applied for the filter : "+myImageConversionStrategy.getClass().getName());
+				
 				myCustomFilter = new CustomFilter3x3( myPaddingStrategy, myImageConversionStrategy,customVals);
+				
 
 				List intersectedObjects = Selector.getDocumentObjectsAtLocation(e.getPoint());
 				if (!intersectedObjects.isEmpty()) {			
 					Shape shape = (Shape)intersectedObjects.get(0);			
 					if (shape instanceof ImageX) {				
 						ImageX currentImage = (ImageX)shape;
-						ImageDouble filteredImage = filter.filterToImageDouble(currentImage);
-						ImageX filteredDisplayableImage = filter.getImageConversionStrategy().convert(filteredImage);
+						ImageDouble filteredImage = myCustomFilter.filterToImageDouble(currentImage);
+						ImageX filteredDisplayableImage = myCustomFilter.getImageConversionStrategy().convert(filteredImage);
 						currentImage.beginPixelUpdate();
 
 						for (int i = 0; i < currentImage.getImageWidth(); ++i) {
@@ -103,41 +98,23 @@ public class FilteringTransformer extends AbstractTransformer{
 			}
 		}
 		switch (index) {
-
-		case 0: // 
-		{
-			System.out.println("0 Strategy");
-			myPaddingStrategy  = new PaddingZeroStrategy() ;
-
-		} 
+		case 0://Zero Padding Strategy 
+		{myPaddingStrategy  = new PaddingZeroStrategy() ;} 
 		break;
-		case 1: // 
-		{
-			System.out.println("None ");
-		} 
+		case 1: //None Padding Strategy	
+		{}
 		break;
-
-		case 2: //
-		{
-			System.out.println("Copy Border Strategy ");
-		} 
+		case 2: //Copy Border Strategy 
+		{} 
 		break;
-		case 3: // 
-		{
-			System.out.println("Mirror Border Strategy ");
-
-		} 
+		case 3: //Mirror Border Strategy 
+		{myPaddingStrategy = new PaddingMirrorStrategy () ;} 
 		break;
-		case 4: // Prewitt Horiz
-		{
-			System.out.println("Circular Border Strategy ");
-		} 
+		case 4: //Circular Border Strategy 
+		{} 
 		break;
-
 		default:
-		{
-			System.out.println("Something happened ! I'm lost !");
-		}
+		{System.out.println("Something happened ! I'm lost !");}
 		break;
 		}
 	}
@@ -155,34 +132,20 @@ public class FilteringTransformer extends AbstractTransformer{
 			}
 		}
 		switch (index) {
-
-		case 0: // 
-		{
-			System.out.println("Clamp 0 @ 255");
-
-		} 
+		case 0: //Clamp 0 @ 255
+			{myImageConversionStrategy = new ImageClampStrategy() ;} 
 		break;
-		case 1: // 
-		{
-			System.out.println("Abs and normalize to 255");
-		} 
+		case 1: //Abs and normalize to 255
+		{} 
 		break;
-
-		case 2: //
-		{
-			System.out.println("Abs and normalize 0 to 255");
-		} 
+		case 2: //Abs and normalize 0 to 255
+		{} 
 		break;
-		case 3: // 
-		{
-			System.out.println("Normalize 0 to 255");
-
-		} 
+		case 3: // Normalize 0 to 255
+		{} 
 		break;		
 		default:
-		{
-			System.out.println("Something happened ! I'm lost !");
-		}
+		{System.out.println("Something happened ! I'm lost !");}
 		break;
 		}
 	}
