@@ -139,7 +139,7 @@ public class FilteringTransformer extends AbstractTransformer{
 		{} 
 		break;
 		case 2: //Abs and normalize 0 to 255
-		{} 
+		{myImageConversionStrategy = new ImageAbsNormaliseStrategy();} 
 		break;
 		case 3: // Normalize 0 to 255
 		{} 
