@@ -52,16 +52,18 @@ public class ImageAbsNormaliseStrategy extends ImageConversionStrategy {
 				if(Math.abs(maxPixelTemp.getAlpha())> maxAlpha){maxAlpha = Math.abs(maxPixelTemp.getAlpha());}
 			}
 		}
-		System.out.println("Max red "+maxRed);
-		System.out.println("Max green "+maxGreen);
-		System.out.println("Max blue "+maxBlue);
-		System.out.println("Max Alpha "+maxAlpha);
+
 		
 		//Facteurs de normalisation
 		double redFactor = 255.0 /maxRed ;
 		double greenFactor = 255.0 /maxGreen ;
 		double blueFactor = 255.0 / maxBlue ;
 		double alphaFactor = 255.0 /maxAlpha ;
+		
+		System.out.println("redFactor "+redFactor);
+		System.out.println("greenFactor "+greenFactor);
+		System.out.println("blueFactor "+blueFactor);
+		System.out.println("AlphaFactor "+alphaFactor);
 		
 
 
@@ -70,10 +72,10 @@ public class ImageAbsNormaliseStrategy extends ImageConversionStrategy {
 			for (int y = 0; y < imageHeight; y++) {
 				curPixelDouble = image.getPixel(x,y);
 
-				newImage.setPixel(x, y, new Pixel((int)(Math.round((curPixelDouble.getRed()))*redFactor),
-						(int)(Math.round(curPixelDouble.getGreen())*greenFactor),
-						(int)(Math.round(curPixelDouble.getBlue())*blueFactor),
-						(int)(Math.round(curPixelDouble.getAlpha())*alphaFactor)));
+				newImage.setPixel(x, y, new Pixel(((int)Math.abs(Math.round((curPixelDouble.getRed()))*redFactor)),
+						(int)Math.abs((Math.round(curPixelDouble.getGreen())*greenFactor)),
+						(int)Math.abs((Math.round(curPixelDouble.getBlue())*blueFactor)),
+						(int)Math.abs((Math.round(curPixelDouble.getAlpha())*alphaFactor))));
 			}
 		}
 		newImage.endPixelUpdate();
