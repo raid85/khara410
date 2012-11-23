@@ -70,7 +70,9 @@ public class BezierCurveType extends CurveType {
 			((ControlPoint)controlPoints.get(1)).getCenter(), 
 			((ControlPoint)controlPoints.get(2)).getCenter(),
 			((ControlPoint)controlPoints.get(3)).getCenter());
+//		System.out.println("Coordonées : " + gVector );		
 		Point p = Matrix.eval(tVector, matrix, gVector);
+		
 		return p;
 	}
 
