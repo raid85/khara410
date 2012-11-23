@@ -20,12 +20,14 @@ import java.util.List;
 import view.Application;
 import view.CurvesPanel;
 
+import model.BSplineCurveType;
 import model.BezierCurveType;
 import model.ControlPoint;
 import model.Curve;
 import model.CurvesModel;
 import model.DocObserver;
 import model.Document;
+import model.HermiteCurveType;
 import model.PolylineCurveType;
 import model.Shape;
 
@@ -101,7 +103,11 @@ public class Curves extends AbstractTransformer implements DocObserver {
 	 * @param string
 	 */
 	public void setCurveType(String string) {
-		if (string == CurvesModel.BEZIER) {
+		if (string == CurvesModel.BSPLINE){
+			curve.setCurveType(new BSplineCurveType(CurvesModel.BSPLINE));
+		} else if (string == CurvesModel.HERMITE){
+			curve.setCurveType(new HermiteCurveType(CurvesModel.HERMITE));
+		} else if (string == CurvesModel.BEZIER) {
 			curve.setCurveType(new BezierCurveType(CurvesModel.BEZIER));
 		} else if (string == CurvesModel.LINEAR) {
 			curve.setCurveType(new PolylineCurveType(CurvesModel.LINEAR));
