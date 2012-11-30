@@ -14,7 +14,13 @@
 */
 package controller;
 
+import java.awt.Point;
+import java.awt.geom.AffineTransform;
+import java.util.Iterator;
 import java.util.List;
+
+import model.Shape;
+import model.AnchoredTransModel;
 
 /**
  * <p>Title: RotateCommand</p>
@@ -25,7 +31,11 @@ import java.util.List;
  * @version $Revision: 1.2 $
  */
 public class RotateCommand extends AnchoredTransformationCommand {
-
+	
+	private MementoTracker mt = new MementoTracker();
+	private List objects;
+	private double thetaDegrees;
+	
 	/**
 	 * @param thetaDegrees the angle of (counter-clockwise) rotation in degrees
 	 * @param anchor one of the predefined positions for the anchor point
@@ -42,8 +52,22 @@ public class RotateCommand extends AnchoredTransformationCommand {
 	 * @see controller.Command#execute()
 	 */
 	public void execute() {
+		
+		Iterator iter = objects.iterator();
+		Shape shape;
+		Point anchorP = getAnchorPoint(objects) ;
+		
+		System.out.println("ANCHOR = "+anchorP.toString());
+		
+		
+		while(iter.hasNext()){
+			shape = (Shape)iter.next();
+			mt.addMememto(shape);
+			AffineTransform t = shape.getAffineTransform();
+			t.rotate(thetaDegrees, anchorP.getX(), anchorP.getY());
+			shape.setAffineTransform(t);
 		System.out.println("command: rotate " + thetaDegrees +
-                           " degrees around " + getAnchor() + ".");
+                           " degrees around " + getAnchor() + ".");}
 
 		// voluntarily undefined
 	}
@@ -55,8 +79,5 @@ public class RotateCommand extends AnchoredTransformationCommand {
 		mt.setBackMementos();
 	}
 
-	private MementoTracker mt = new MementoTracker();
-	private List objects;
-	private double thetaDegrees;
 	
 }
