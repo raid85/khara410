@@ -69,7 +69,7 @@ public class RotateCommand extends AnchoredTransformationCommand {
 		System.out.println("command: rotate " + thetaDegrees +
                            " degrees around " + getAnchor() + ".");}
 
-		// voluntarily undefined
+		
 	}
 
 	/* (non-Javadoc)
