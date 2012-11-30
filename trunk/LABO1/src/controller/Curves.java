@@ -14,6 +14,7 @@
 */
 package controller;
 
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
@@ -139,7 +140,24 @@ public class Curves extends AbstractTransformer implements DocObserver {
 				Shape s = (Shape)selectedObjects.get(0);
 				if (curve.getShapes().contains(s)){
 					int controlPointIndex = curve.getShapes().indexOf(s);
-					System.out.println("Try to apply C1 continuity on control point [" + controlPointIndex + "]");
+					if(controlPointIndex%3==0 && controlPointIndex!=0){
+						
+						System.out.println("Try to apply C1 continuity on control point [" + controlPointIndex + "]");
+						
+						Point pointPrec = ((ControlPoint)curve.getShapes().get(controlPointIndex-1)).getCenter();
+						
+						Point intersection = ((ControlPoint)curve.getShapes().get(controlPointIndex)).getCenter();
+						int tailleMax = (int)curve.getShapes().size();
+						if(controlPointIndex+1<tailleMax-1){
+						Point pointSuiv = ((ControlPoint)curve.getShapes().get(controlPointIndex+1)).getCenter();
+						pointSuiv.setLocation(intersection.getX()+ (intersection.getX()-pointPrec.getX()), intersection.getY()+(intersection.getY()-pointPrec.getY()) );
+						}
+						
+						
+						curve.recomputeLineSegments();
+						curve.notifyObservers();
+
+					}
 				}
 			}
 			
