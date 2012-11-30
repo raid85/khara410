@@ -73,6 +73,26 @@ public abstract class AnchoredTransformationCommand extends Command {
 		}
 		return new Point(x,y);
 	}
+	protected Point getAnchorPointC(List objects , int cAnchor) {
+		Shape s = (Shape)objects.get(0);
+		java.awt.Rectangle r = s.getRectangle();
+		int x, y;
+		if (cAnchor == TOP_LEFT || cAnchor == MIDDLE_LEFT || cAnchor == BOTTOM_LEFT) {
+			x = (int)r.getMinX(); 
+		} else if (cAnchor == TOP_CENTER || cAnchor == CENTER || cAnchor == BOTTOM_CENTER) {
+			x = (int)r.getCenterX(); 
+		} else {
+			x = (int)r.getMaxX();
+		}
+		if (cAnchor == TOP_LEFT || cAnchor == TOP_CENTER || cAnchor == TOP_RIGHT) {
+			y = (int)r.getMinY();
+		} else if (cAnchor == MIDDLE_LEFT || cAnchor == CENTER ||cAnchor == MIDDLE_RIGHT) {
+			y = (int)r.getCenterY(); 
+		} else {
+			y = (int)r.getMaxY();
+		}
+		return new Point(x,y);
+	}
 
 	private final int anchor;
 	
