@@ -48,39 +48,25 @@ public class ShearXCommand extends AnchoredTransformationCommand {
 
 		Iterator iter = objects.iterator();
 		Shape shape;
-		Point anchorP = getAnchorPoint(objects) ;
+		Point anchorP = getAnchorPoint(objects) ;		
 		
-		System.out.println("ANCHOR = "+getAnchor());		
-		int opposedToAnchor = -1;
-		int anchori = getAnchor() ;
-		switch (anchori) {
-		 case 0: opposedToAnchor = 6;  break;
-		 case 1: opposedToAnchor = 7 ;break;
-		 case 2: opposedToAnchor = 8 ;break;
-		 case 3: opposedToAnchor = 5 ;break;
-		 case 4: opposedToAnchor = 1 ;break;
-		 case 5: opposedToAnchor = 3 ;break;
-		 case 6: opposedToAnchor = 0 ;break;
-		 case 7: opposedToAnchor = 1 ;break;
-		 case 8: opposedToAnchor = 2 ;	break;	 
-		 default: System.out.println("Jai mal a la faceeeeeeeeeeeee");
-		 }
-		double shx = Math.tan(angleDegrees)*(getAnchorPointC(objects,opposedToAnchor).y-anchorP.getY()) ;
-		System.out.println("Shx"+ getAnchorPointC(objects,opposedToAnchor).y);
+		double shx = Math.tan(angleDegrees);
+		
 		
 		while(iter.hasNext()){
 			shape = (Shape)iter.next();
 			mt.addMememto(shape);
 			AffineTransform t = shape.getAffineTransform();
-			
+			t.translate(anchorP.getX(),anchorP.getY());
 			t.shear(shx, 0);
+			t.translate(-anchorP.getX(),-anchorP.getY());
+			
 			shape.setAffineTransform(t);
-
 			System.out.println("command: shearing on x-axis by " + angleDegrees +
-					           " degrees anchored on " + getAnchor());
+					           " degrees anchored on " + anchorP.toString());
 	}
 
-		// voluntarily undefined
+		
 	}
 
 	/* (non-Javadoc)
